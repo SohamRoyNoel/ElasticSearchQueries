@@ -3,7 +3,7 @@ GET /_cluster/health
 GET /_cat/nodes
 
 GET /_cat/indices
-```
+
 PUT /products
 {
   "settings": {
@@ -11,7 +11,7 @@ PUT /products
     "number_of_replicas": 1
   }
 }
-```
+
 POST /products/_doc
 {
   "name": "alu bom",
@@ -123,7 +123,6 @@ POST /products/_update_by_query
   }
 }
 Result:
-```
 {
   "took" : 117,
   "timed_out" : false,
@@ -142,4 +141,4 @@ Result:
   "throttled_until_millis" : 0,
   "failures" : [ ]
 }
-```
+
