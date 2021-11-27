@@ -3,7 +3,7 @@ GET /_cluster/health
 GET /_cat/nodes
 
 GET /_cat/indices
-
+```
 PUT /products
 {
   "settings": {
@@ -11,7 +11,7 @@ PUT /products
     "number_of_replicas": 1
   }
 }
-
+```
 POST /products/_doc
 {
   "name": "alu bom",
@@ -89,5 +89,57 @@ POST /products/_update/100
   }
 }
 
+--------------------------------> Upsert logic
+GET /products/_doc/101
 
+POST /products/_update/101
+{
+  "script": {
+    "source": "ctx._source.inStock--"
+  },
+  "upsert": {
+    "name": "expired bomb",
+    "price" : 19,
+    "inStock" : 10,
+    "tax" : 200
+  }
+}
 
+---------------------------------> Replace a doc
+PUT /products/_doc/101
+{
+  "name" : "expired bomb",
+  "tax" : 200
+}
+
+---------------------------------> Update Multiple
+POST /products/_update_by_query
+{
+  "script": {
+    "source": "ctx._source.inStock--"
+  },
+  "query": {
+    "match_all": {}
+  }
+}
+Result:
+```
+{
+  "took" : 117,
+  "timed_out" : false,
+  "total" : 3,
+  "updated" : 3,
+  "deleted" : 0,
+  "batches" : 1,
+  "version_conflicts" : 0,
+  "noops" : 0,
+  "retries" : {
+    "bulk" : 0,
+    "search" : 0
+  },
+  "throttled_millis" : 0,
+  "requests_per_second" : -1.0,
+  "throttled_until_millis" : 0,
+  "failures" : [ ]
+}
+```
