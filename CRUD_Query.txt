@@ -142,3 +142,10 @@ Result:
   "failures" : [ ]
 }
 
+---------------------------------> delete Multiple
+POST /products/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
