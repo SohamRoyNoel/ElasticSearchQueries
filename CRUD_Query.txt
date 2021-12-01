@@ -149,3 +149,20 @@ POST /products/_delete_by_query
     "match_all": {}
   }
 }
+
+---------------------------------> Bulk insert
+POST /_bulk
+{ "index": { "_index": "products", "_id": 200 } }
+{ "name": "Maggi", "price": 200, "inStock":100 }
+{ "create": { "_index": "products", "_id": 201 } }
+{ "name": "Magi", "price": 300, "inStock":100 }
+
+---------------------------------> Bulk update and delete
+POST /products/_bulk
+{ "update": { "_id": 200 } }
+{ "doc":  { "price": 350 }}
+{ "delete": { "_id": 201 } }
+
+-----------------------------------> importing data to ES
+terminal command:
+curl -H "Content-Type: application/x-ndjson" -XPOST http://localhost:9200/products/_bulk --data-binary "@/Users/soham/Downloads/products-bulk.json"
